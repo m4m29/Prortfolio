@@ -227,16 +227,24 @@
                         </div>
                         
                         <!-- Avatar / Virtual Frame -->
-                        <div class="relative group">
-                            <div class="absolute inset-0 bg-gradient-to-tr from-cyber-cyan to-cyber-blue rounded-3xl blur-md opacity-40 group-hover:opacity-80 transition-opacity duration-300"></div>
-                            <div class="relative w-44 h-44 lg:w-52 lg:h-52 bg-slate-950 rounded-3xl border border-slate-700/80 p-4 flex flex-col items-center justify-center text-center space-y-3">
-                                <i class="fa-solid fa-robot text-5xl text-cyber-cyan animate-bounce"></i>
-                                <div>
-                                    <span class="block text-xs font-code text-slate-500">Mã sinh viên</span>
-                                    <span class="text-lg font-bold font-code text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan to-cyber-blue">25023314</span>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- MỚI (Đã nhúng ảnh cá nhân đổi cho robot, bo góc đồng bộ phong cách Cyberpunk) -->
+<div class="relative group">
+    <div class="absolute inset-0 bg-gradient-to-tr from-cyber-cyan to-cyber-blue rounded-3xl blur-md opacity-40 group-hover:opacity-80 transition-opacity duration-300"></div>
+    <div class="relative w-44 h-56 lg:w-52 lg:h-64 bg-slate-950 rounded-3xl border border-slate-700/80 p-3 flex flex-col items-center justify-between text-center">
+        <!-- Khung chứa ảnh chân dung -->
+        <div class="w-full h-36 lg:h-44 rounded-2xl overflow-hidden border border-slate-800 bg-slate-900">
+            <img src="https://drive.google.com/uc?export=view&id=1Rwgk6VlOEjmd65_dIZyzcxkT_2VMj0uR" 
+                 alt="Nguyễn Đức Mạnh" 
+                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                 referrerpolicy="no-referrer">
+        </div>
+        <!-- Thông tin mã sinh viên -->
+        <div class="w-full pt-2">
+            <span class="block text-[10px] font-code text-slate-500 uppercase tracking-wider">Mã sinh viên</span>
+            <span class="text-base lg:text-lg font-bold font-code text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan to-cyber-blue">25023314</span>
+        </div>
+    </div>
+</div>
                     </div>
                 </div>
 
