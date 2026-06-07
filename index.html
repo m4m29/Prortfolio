@@ -40,32 +40,44 @@
     </script>
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Fira Code -->
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts: Be Vietnam Pro (Sans-Serif) & Lora (Serif for elite readability) -->
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            /* Mặc định cỡ chữ "Vừa" tiêu chuẩn 16px */
+            font-size: 16px;
+        }
+        
         body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: 'Be Vietnam Pro', sans-serif;
             background-color: #030712;
             color: #f3f4f6;
+            transition: font-size 0.2s ease, font-family 0.2s ease;
         }
+
         .font-code {
             font-family: 'Fira Code', monospace;
         }
+        
         /* Custom scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 10px;
+            height: 10px;
         }
         ::-webkit-scrollbar-track {
             background: #030712;
         }
         ::-webkit-scrollbar-thumb {
             background: #1e293b;
-            border-radius: 4px;
+            border-radius: 5px;
+            border: 2px solid #030712;
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #0ea5e9;
         }
+        
         /* Tech glow animation */
         @keyframes glow {
             0% {
@@ -78,77 +90,74 @@
         .cyber-glow:hover {
             animation: glow 1.5s ease-in-out infinite alternate;
         }
+        
         /* Active Tab indicator style */
         .tab-active {
-            background: linear-gradient(135deg, rgba(14, 165, 233, 0.15) 0%, rgba(0, 114, 255, 0.15) 100%);
-            border-left: 4px solid #00f0ff;
+            background: linear-gradient(135deg, rgba(14, 165, 233, 0.2) 0%, rgba(0, 114, 255, 0.2) 100%);
+            border-left: 5px solid #00f0ff;
             color: #00f0ff !important;
         }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body class="overflow-x-hidden" id="body-content">
 
     <!-- CANVAS BACKGROUND EFFECT -->
-    <canvas id="matrix-canvas" class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-25"></canvas>
+    <canvas id="matrix-canvas" class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none opacity-20"></canvas>
 
     <!-- HEADER / NAVIGATION FOR MOBILE -->
-    <header class="lg:hidden bg-brand-950/90 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40 px-4 py-3 flex items-center justify-between">
+    <header class="lg:hidden bg-brand-950/95 backdrop-blur-md border-b border-slate-800 sticky top-0 z-40 px-4 py-3 flex items-center justify-between">
         <div class="flex items-center space-x-3">
-            <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-500 to-cyber-cyan flex items-center justify-center font-bold text-white text-sm">
+            <div class="w-9 h-9 rounded-lg bg-gradient-to-tr from-brand-500 to-cyber-cyan flex items-center justify-center font-bold text-white text-sm">
                 DM
             </div>
-            <span class="font-code text-cyber-cyan font-bold tracking-wider text-sm">MANH_UET_PORTFOLIO_v1.0</span>
+            <span class="font-code text-cyber-cyan font-bold tracking-wider text-xs">MANH_UET_v1.0</span>
         </div>
-        <button id="mobile-menu-btn" class="text-slate-300 focus:outline-none p-2 rounded-md hover:bg-slate-800">
-            <i class="fa-solid fa-bars text-xl"></i>
-        </button>
+        <div class="flex items-center space-x-2">
+            <button id="mobile-menu-btn" class="text-slate-300 focus:outline-none p-2 rounded-md hover:bg-slate-800">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
     </header>
 
     <div class="flex min-h-screen">
         
         <!-- SIDEBAR NAVIGATION (LEFT - DESKTOP / DRAWER - MOBILE) -->
-        <!-- Sửa lại: Thêm flex flex-col h-screen sticky top-0 để kiểm soát chiều cao tuyệt đối -->
-        <aside id="sidebar" class="fixed lg:sticky top-0 left-0 h-screen w-80 bg-slate-900/95 lg:bg-brand-950/80 backdrop-blur-xl border-r border-slate-800 flex flex-col justify-between z-50 transition-transform duration-300 -translate-x-full lg:translate-x-0">
+        <aside id="sidebar" class="fixed lg:sticky top-0 left-0 h-screen w-85 bg-slate-900/98 lg:bg-brand-950/85 backdrop-blur-xl border-r border-slate-800 flex flex-col justify-between z-50 transition-transform duration-300 -translate-x-full lg:translate-x-0">
             
-            <!-- Phần Nội dung phía trên Sidebar (Bọc trong flex-1 overflow-y-auto để có thể cuộn độc lập nếu cần) -->
             <div class="flex-1 overflow-y-auto">
                 <!-- Top Brand Logo & Terminal Status -->
                 <div class="p-6 border-b border-slate-800/80">
                     
                     <!-- LOGO NDM PORTFOLIO MỚI VỚI HOẠT ẢNH SINH ĐỘNG -->
-                    <div class="mb-6 group cursor-pointer">
+                    <div class="mb-4 group cursor-pointer">
                         <div class="flex items-center space-x-3">
-                            <!-- Icon Box với hiệu ứng xoay góc nhẹ khi hover và xung phát sáng -->
                             <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-brand-600 via-cyber-blue to-cyber-cyan flex items-center justify-center text-white font-bold shadow-lg shadow-cyber-cyan/20 group-hover:shadow-cyber-cyan/50 group-hover:rotate-6 transition-all duration-300 relative overflow-hidden">
                                 <i class="fa-solid fa-code-branch text-xl animate-pulse"></i>
-                                <!-- Vệt sáng quét ngang ngầm bên trong logo -->
                                 <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
                             </div>
-                            <!-- Phần chữ NDM Portfolio viết cách điệu -->
                             <div class="flex flex-col">
                                 <span class="font-code text-xl font-black tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-cyber-cyan via-white to-cyber-blue select-none uppercase group-hover:from-white group-hover:to-cyber-cyan transition-all duration-500">
                                     NDM <span class="text-xs font-light text-slate-400 tracking-widest lowercase group-hover:text-cyber-cyan">Portfolio</span>
                                 </span>
-                                <span class="text-[9px] font-code text-brand-500 tracking-widest font-bold flex items-center space-x-1 uppercase">
+                                <span class="text-[10px] font-code text-brand-500 tracking-widest font-bold flex items-center space-x-1 uppercase">
                                     <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping inline-block mr-1"></span>
-                                    Active
+                                    Đang hoạt động
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Giữ lại thông tin Tên sinh viên cũ bên dưới gọn gàng hơn -->
-                    <div class="bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/50 mb-4">
-                        <h2 class="font-bold text-sm text-slate-300 tracking-tight leading-none mb-1">Nguyễn Đức Mạnh</h2>
-                        <p class="text-[11px] text-cyber-cyan/80 font-code tracking-wider">UET Student // IS Dev</p>
+                    <div class="bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                        <h2 class="font-bold text-base text-white tracking-tight leading-none mb-1">Nguyễn Đức Mạnh</h2>
+                        <p class="text-xs text-cyber-cyan/90 font-code tracking-wider">Sinh viên UET // Lớp E252014</p>
                     </div>
                 </div>
 
                 <!-- Main Menu Tabs -->
                 <nav class="p-4 space-y-2">
-                    <p class="px-3 text-[10px] font-bold tracking-widest text-slate-500 uppercase mb-2">DANH MỤC TRANG</p>
+                    <p class="px-3 text-[11px] font-bold tracking-widest text-slate-400 uppercase mb-2">DANH MỤC TRANG</p>
                     
-                    <button onclick="switchTab('about')" class="tab-btn w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-all font-medium text-sm group" id="tab-btn-about">
+                    <button onclick="switchTab('about')" class="tab-btn w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all font-semibold text-base group" id="tab-btn-about">
                         <span class="flex items-center space-x-3">
                             <i class="fa-solid fa-user-astronaut text-base group-hover:scale-110 transition-transform"></i>
                             <span>1. Giới thiệu bản thân</span>
@@ -156,15 +165,15 @@
                         <i class="fa-solid fa-chevron-right text-xs opacity-50"></i>
                     </button>
 
-                    <button onclick="switchTab('projects')" class="tab-btn w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-all font-medium text-sm group" id="tab-btn-projects">
+                    <button onclick="switchTab('projects')" class="tab-btn w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all font-semibold text-base group" id="tab-btn-projects">
                         <span class="flex items-center space-x-3">
                             <i class="fa-solid fa-cubes text-base group-hover:scale-110 transition-transform"></i>
                             <span>2. Kho lưu trữ Dự án</span>
                         </span>
-                        <span class="bg-brand-500/20 text-brand-500 text-[10px] font-bold px-2 py-0.5 rounded-full">7 Bài</span>
+                        <span class="bg-brand-500/20 text-brand-400 text-xs font-bold px-2.5 py-1 rounded-full">7 Bài</span>
                     </button>
 
-                    <button onclick="switchTab('conclusion')" class="tab-btn w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 transition-all font-medium text-sm group" id="tab-btn-conclusion">
+                    <button onclick="switchTab('conclusion')" class="tab-btn w-full flex items-center justify-between px-4 py-3.5 rounded-xl text-slate-300 hover:text-white hover:bg-slate-800/60 transition-all font-semibold text-base group" id="tab-btn-conclusion">
                         <span class="flex items-center space-x-3">
                             <i class="fa-solid fa-graduation-cap text-base group-hover:scale-110 transition-transform"></i>
                             <span>3. Đánh giá & Tổng kết</span>
@@ -174,22 +183,22 @@
                 </nav>
             </div>
 
-            <!-- Sidebar Footer Contact & Meta (Luôn cố định bám chặt dưới đáy Sidebar) -->
+            <!-- Sidebar Footer Contact & Meta -->
             <div class="p-6 border-t border-slate-800/80 bg-slate-950/80">
                 <div class="flex items-center justify-around mb-4">
-                    <a href="https://github.com" target="_blank" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-cyber-cyan hover:text-cyber-dark text-slate-400 flex items-center justify-center transition-all" title="Github">
-                        <i class="fa-brands fa-github"></i>
+                    <a href="https://github.com" target="_blank" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-cyber-cyan hover:text-cyber-dark text-slate-300 flex items-center justify-center transition-all" title="Github">
+                        <i class="fa-brands fa-github text-base"></i>
                     </a>
-                    <a href="mailto:25023314@vnu.edu.vn" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-cyber-cyan hover:text-cyber-dark text-slate-400 flex items-center justify-center transition-all" title="Email">
-                        <i class="fa-solid fa-envelope"></i>
+                    <a href="mailto:25023314@vnu.edu.vn" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-cyber-cyan hover:text-cyber-dark text-slate-300 flex items-center justify-center transition-all" title="Email">
+                        <i class="fa-solid fa-envelope text-base"></i>
                     </a>
-                    <a href="tel:09623314" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-cyber-cyan hover:text-cyber-dark text-slate-400 flex items-center justify-center transition-all" title="Điện thoại">
-                        <i class="fa-solid fa-phone"></i>
+                    <a href="tel:09623314" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-cyber-cyan hover:text-cyber-dark text-slate-300 flex items-center justify-center transition-all" title="Điện thoại">
+                        <i class="fa-solid fa-phone text-base"></i>
                     </a>
                 </div>
-                <div class="text-center font-code text-[10px] text-slate-500">
+                <div class="text-center font-code text-xs text-slate-400">
                     <p>© 2026 Duc Manh Nguyen</p>
-                    <p class="text-cyber-cyan/50 mt-1">UET - VNU Hanoi</p>
+                    <p class="text-cyber-cyan/75 mt-1 font-bold">UET - VNU Hanoi</p>
                 </div>
             </div>
         </aside>
@@ -209,87 +218,81 @@
                     <div class="absolute -bottom-12 -left-12 w-64 h-64 bg-cyber-cyan/10 rounded-full blur-3xl pointer-events-none"></div>
                     
                     <div class="relative flex flex-col md:flex-row items-center justify-between gap-8">
-                        <div class="space-y-4 max-w-2xl text-center md:text-left">
-                            <div class="inline-flex items-center space-x-2 bg-brand-500/10 text-cyber-cyan border border-brand-500/30 px-3 py-1 rounded-full text-xs font-code">
+                        <div class="space-y-5 max-w-2xl text-center md:text-left">
+                            <div class="inline-flex items-center space-x-2 bg-brand-500/15 text-cyber-cyan border border-brand-500/45 px-4 py-1.5 rounded-full text-xs font-bold font-code">
                                 <span class="w-2 h-2 rounded-full bg-cyber-cyan animate-ping"></span>
                                 <span>PORTFOLIO KỸ THUẬT SỐ CÁ NHÂN</span>
                             </div>
-                            <h1 class="text-xl lg:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-cyber-cyan tracking-tight">
+                            <h1 class="text-4xl lg:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-cyber-cyan tracking-tight">
                                 Nguyễn Đức Mạnh
                             </h1>
-                            <p class="text-slate-300 font-medium text-lg leading-relaxed">
-                                Sinh viên chuyên ngành <strong class="text-cyber-cyan">Hệ thống thông tin (IS)</strong> tại Trường Đại học Công nghệ - ĐHQGHN (VNU-UET). Mong muốn kiến tạo giá trị thông tin dựa trên AI và khoa học công nghệ số.
+                            <p class="text-slate-100 font-medium text-lg lg:text-xl leading-relaxed">
+                                Sinh viên chuyên ngành <strong class="text-cyber-cyan underline decoration-brand-500/40">Hệ thống thông tin (IS)</strong> tại Trường Đại học Công nghệ - ĐHQGHN (VNU-UET). Mong muốn kiến tạo giá trị thông tin dựa trên AI và khoa học công nghệ số.
                             </p>
                             <!-- Live Typing terminal -->
-                            <div class="p-3 bg-slate-950/90 rounded-xl border border-slate-800 font-code text-sm text-left max-w-xl">
-                                <span class="text-amber-500">manhnguyenduc@gmail.com</span> <span id="typing-text" class="text-slate-300"></span><span class="animate-pulse font-bold text-cyber-cyan">|</span>
+                            <div class="p-4 bg-slate-950/95 rounded-xl border border-slate-800 font-code text-sm lg:text-base text-left max-w-xl shadow-lg">
+                                <span class="text-amber-400 font-bold">manhnguyenduc@gmail.com</span> <span id="typing-text" class="text-slate-200"></span><span class="animate-pulse font-bold text-cyber-cyan">|</span>
                             </div>
                         </div>
                         
-                        <!-- Avatar / Virtual Frame -->
-                        <!-- MỚI (Đã nhúng ảnh cá nhân đổi cho robot, bo góc đồng bộ phong cách Cyberpunk) -->
-<div class="relative group">
-    <div class="absolute inset-0 bg-gradient-to-tr from-cyber-cyan to-cyber-blue rounded-3xl blur-md opacity-40 group-hover:opacity-80 transition-opacity duration-300"></div>
-    <div class="relative w-44 h-56 lg:w-52 lg:h-64 bg-slate-950 rounded-3xl border border-slate-700/80 p-3 flex flex-col items-center justify-between text-center">
-        <!-- Khung chứa ảnh chân dung -->
-        <div class="w-full h-36 lg:h-44 rounded-2xl overflow-hidden border border-slate-800 bg-slate-900">
-            <img src="https://drive.google.com/uc?export=view&id=1Rwgk6VlOEjmd65_dIZyzcxkT_2VMj0uR" 
-                 alt="Nguyễn Đức Mạnh" 
-                 class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                 referrerpolicy="no-referrer">
-        </div>
-        <!-- Thông tin mã sinh viên -->
-        <div class="w-full pt-2">
-            <span class="block text-[10px] font-code text-slate-500 uppercase tracking-wider">Mã sinh viên</span>
-            <span class="text-base lg:text-lg font-bold font-code text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan to-cyber-blue">25023314</span>
-        </div>
-    </div>
-</div>
+                        <!-- Avatar / Virtual Frame với ảnh chân dung thực tế từ Google Drive -->
+                        <div class="relative group flex-shrink-0">
+                            <div class="absolute inset-0 bg-gradient-to-tr from-cyber-cyan to-cyber-blue rounded-3xl blur-md opacity-45 group-hover:opacity-85 transition-opacity duration-300"></div>
+                            <div class="relative w-48 h-64 lg:w-56 lg:h-72 bg-slate-950 rounded-3xl border border-slate-700/90 p-3 flex flex-col items-center justify-between text-center overflow-hidden shadow-2xl">
+                                <div class="w-full h-[82%] rounded-2xl overflow-hidden border border-slate-800 relative bg-slate-900">
+                                    <img src="https://lh3.googleusercontent.com/d/1Rwgk6VlOEjmd65_dIZyzcxkT_2VMj0uR" alt="Nguyễn Đức Mạnh" class="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-300" onerror="this.onerror=null; this.src='https://placehold.co/300x400/031b33/00f0ff?text=NDM'">
+                                </div>
+                                <div class="pb-1">
+                                    <span class="block text-[10px] font-code text-slate-400">Mã sinh viên</span>
+                                    <span class="text-base font-bold font-code text-transparent bg-clip-text bg-gradient-to-r from-cyber-cyan to-cyber-blue tracking-widest">25023314</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <!-- Personal Information Grid -->
                 <div>
-                    <h2 class="text-2xl font-bold text-slate-100 mb-6 flex items-center space-x-3">
-                        <span class="w-2 h-8 bg-brand-500 rounded-full inline-block"></span>
+                    <h2 class="text-3xl font-extrabold text-white mb-6 flex items-center space-x-3 border-b border-slate-800 pb-3">
+                        <span class="w-2.5 h-8 bg-brand-500 rounded-full inline-block"></span>
                         <span>Thông tin lý lịch học thuật</span>
                     </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                         <!-- Card 1 -->
-                        <div class="bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl space-y-3 shadow-lg hover:border-slate-700 transition-all">
-                            <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-cyber-cyan">
-                                <i class="fa-solid fa-cake-candles text-lg"></i>
+                        <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl space-y-3 shadow-lg hover:border-slate-700 transition-all">
+                            <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-cyber-cyan">
+                                <i class="fa-solid fa-cake-candles text-xl"></i>
                             </div>
-                            <h3 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Ngày sinh</h3>
-                            <p class="text-lg font-bold text-slate-100">29/06/2006</p>
-                            <p class="text-xs text-slate-500">Cung Cự Giải (Cancer)</p>
+                            <h3 class="text-slate-300 text-sm font-black uppercase tracking-wider">Ngày sinh</h3>
+                            <p class="text-xl font-bold text-white">29/06/2006</p>
+                            <p class="text-sm text-slate-400">Cung Cự Giải (Cancer)</p>
                         </div>
                         <!-- Card 2 -->
-                        <div class="bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl space-y-3 shadow-lg hover:border-slate-700 transition-all">
-                            <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-cyber-cyan">
-                                <i class="fa-solid fa-graduation-cap text-lg"></i>
+                        <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl space-y-3 shadow-lg hover:border-slate-700 transition-all">
+                            <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-cyber-cyan">
+                                <i class="fa-solid fa-graduation-cap text-xl"></i>
                             </div>
-                            <h3 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Trường học</h3>
-                            <p class="text-base font-bold text-slate-100 leading-tight">Đại học Công nghệ (UET) - ĐHQGHN</p>
-                            <p class="text-xs text-brand-500">Nôi trường phát triển CNTT hàng đầu</p>
+                            <h3 class="text-slate-300 text-sm font-black uppercase tracking-wider">Trường học</h3>
+                            <p class="text-base font-bold text-white leading-tight">Đại học Công nghệ (UET) - ĐHQGHN</p>
+                            <p class="text-sm text-brand-400 font-semibold">Cơ sở giáo dục hàng đầu</p>
                         </div>
                         <!-- Card 3 -->
-                        <div class="bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl space-y-3 shadow-lg hover:border-slate-700 transition-all">
-                            <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-cyber-cyan">
-                                <i class="fa-solid fa-school text-lg"></i>
+                        <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl space-y-3 shadow-lg hover:border-slate-700 transition-all">
+                            <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-cyber-cyan">
+                                <i class="fa-solid fa-school text-xl"></i>
                             </div>
-                            <h3 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Lớp học phần</h3>
-                            <p class="text-lg font-bold text-slate-100">VNU1001_E252014</p>
-                            <p class="text-xs text-slate-500">Nhập môn CN Số & Ứng dụng AI</p>
+                            <h3 class="text-slate-300 text-sm font-black uppercase tracking-wider">Lớp học phần</h3>
+                            <p class="text-lg font-bold text-white">VNU1001_E252014</p>
+                            <p class="text-sm text-slate-400">Nhập môn CN Số & AI</p>
                         </div>
                         <!-- Card 4 -->
-                        <div class="bg-slate-900/60 border border-slate-800/80 p-6 rounded-2xl space-y-3 shadow-lg hover:border-slate-700 transition-all">
-                            <div class="w-10 h-10 rounded-xl bg-slate-800 flex items-center justify-center text-cyber-cyan">
-                                <i class="fa-solid fa-laptop-code text-lg"></i>
+                        <div class="bg-slate-900/80 border border-slate-800 p-6 rounded-2xl space-y-3 shadow-lg hover:border-slate-700 transition-all">
+                            <div class="w-12 h-12 rounded-xl bg-slate-800 flex items-center justify-center text-cyber-cyan">
+                                <i class="fa-solid fa-laptop-code text-xl"></i>
                             </div>
-                            <h3 class="text-slate-400 text-xs font-bold uppercase tracking-wider">Chuyên ngành</h3>
-                            <p class="text-lg font-bold text-slate-100">Hệ thống thông tin (IS)</p>
-                            <p class="text-xs text-slate-500">Quản trị, phân tích & khai thác dữ liệu</p>
+                            <h3 class="text-slate-300 text-sm font-black uppercase tracking-wider">Chuyên ngành</h3>
+                            <p class="text-lg font-bold text-white">Hệ thống thông tin (IS)</p>
+                            <p class="text-sm text-slate-400">Phân tích & khai thác dữ liệu</p>
                         </div>
                     </div>
                 </div>
@@ -297,103 +300,86 @@
                 <!-- Academic Objectives & Digital Interests -->
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     <!-- Column 1: Objectives & Path -->
-                    <div class="bg-slate-900/40 border border-slate-800 p-6 lg:p-8 rounded-2xl space-y-6">
-                        <h3 class="text-xl font-bold text-slate-100 flex items-center space-x-2">
+                    <div class="bg-slate-900/50 border border-slate-800 p-6 lg:p-8 rounded-2xl space-y-6 shadow-xl">
+                        <h3 class="text-2xl font-bold text-white flex items-center space-x-2 border-b border-slate-800/60 pb-2">
                             <i class="fa-solid fa-bullseye text-brand-500"></i>
                             <span>Mục tiêu & Định hướng phát triển</span>
                         </h3>
-                        <p class="text-slate-300 text-sm leading-relaxed">
+                        <p class="text-slate-200 text-base leading-relaxed">
                             Môn học <strong>VNU1001: Nhập môn Công nghệ số và Ứng dụng Trí tuệ nhân tạo</strong> là bệ phóng quan trọng giúp tôi hoàn thiện tư duy hệ thống. Là một kỹ sư Hệ thống thông tin tương lai, tôi định hướng ứng dụng AI tạo sinh kết hợp các mô hình dữ liệu quy mô lớn nhằm tối ưu hóa vận hành cho các tổ chức.
                         </p>
                         <div class="space-y-4">
                             <!-- Goal 1 -->
                             <div class="flex items-start space-x-3">
-                                <div class="w-5 h-5 rounded-full bg-cyber-cyan/10 text-cyber-cyan flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div class="w-6 h-6 rounded-full bg-cyber-cyan/15 text-cyber-cyan flex items-center justify-center flex-shrink-0 mt-1">
                                     <i class="fa-solid fa-check text-xs"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-sm font-bold text-slate-200">Tối ưu hóa Truy hồi thông tin</h4>
-                                    <p class="text-xs text-slate-400">Ứng dụng thuật toán PageRank, Matrix nén trong phân tích dữ liệu mạng lưới.</p>
+                                    <h4 class="text-base font-bold text-white">Tối ưu hóa Truy hồi thông tin</h4>
+                                    <p class="text-sm text-slate-300">Ứng dụng thuật toán PageRank, Matrix nén trong phân tích dữ liệu mạng lưới.</p>
                                 </div>
                             </div>
                             <!-- Goal 2 -->
                             <div class="flex items-start space-x-3">
-                                <div class="w-5 h-5 rounded-full bg-cyber-cyan/10 text-cyber-cyan flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div class="w-6 h-6 rounded-full bg-cyber-cyan/15 text-cyber-cyan flex items-center justify-center flex-shrink-0 mt-1">
                                     <i class="fa-solid fa-check text-xs"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-sm font-bold text-slate-200">Prompt Engineering xuất sắc</h4>
-                                    <p class="text-xs text-slate-400">Làm chủ các mô hình AI ngôn ngữ lớn qua kỹ thuật Role, Chain-of-thought và Few-shot.</p>
+                                    <h4 class="text-base font-bold text-white">Prompt Engineering xuất sắc</h4>
+                                    <p class="text-sm text-slate-300">Làm chủ các mô hình AI ngôn ngữ lớn qua kỹ thuật Role, Chain-of-thought và Few-shot.</p>
                                 </div>
                             </div>
                             <!-- Goal 3 -->
                             <div class="flex items-start space-x-3">
-                                <div class="w-5 h-5 rounded-full bg-cyber-cyan/10 text-cyber-cyan flex items-center justify-center flex-shrink-0 mt-0.5">
+                                <div class="w-6 h-6 rounded-full bg-cyber-cyan/15 text-cyber-cyan flex items-center justify-center flex-shrink-0 mt-1">
                                     <i class="fa-solid fa-check text-xs"></i>
                                 </div>
                                 <div>
-                                    <h4 class="text-sm font-bold text-slate-200">Liêm chính học thuật hàng đầu</h4>
-                                    <p class="text-xs text-slate-400">Cam kết làm chủ công cụ AI có đạo đức, trích dẫn minh bạch và luôn kiểm chứng thông tin khoa học.</p>
+                                    <h4 class="text-base font-bold text-white">Liêm chính học thuật hàng đầu</h4>
+                                    <p class="text-sm text-slate-300">Cam kết làm chủ công cụ AI có đạo đức, trích dẫn minh bạch và luôn kiểm chứng thông tin khoa học.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Column 2: Tech Skills Radar (Progress Bars) -->
-                    <div class="bg-slate-900/40 border border-slate-800 p-6 lg:p-8 rounded-2xl space-y-6">
-                        <h3 class="text-xl font-bold text-slate-100 flex items-center space-x-2">
-                            <i class="fa-solid fa-sliders text-brand-500"></i>
-                            <span>Năng lực công nghệ số đạt được</span>
+                    <!-- Column 2: Portfolio Objectives -->
+                    <div class="bg-slate-900/50 border border-slate-800 p-6 lg:p-8 rounded-2xl space-y-6 shadow-xl">
+                        <h3 class="text-2xl font-bold text-white flex items-center space-x-2 border-b border-slate-800/60 pb-2">
+                            <i class="fa-solid fa-map-location-dot text-brand-500 animate-pulse"></i>
+                            <span>Mục tiêu của Portfolio</span>
                         </h3>
+                        <p class="text-slate-200 text-base leading-relaxed">
+                            Digital Portfolio này được tôi xây dựng nhằm hướng tới các mục tiêu cốt lõi giúp hệ thống hóa kiến thức, ghi lại cột mốc học tập và chứng minh năng lực thực tế trong kỷ nguyên số hóa:
+                        </p>
                         <div class="space-y-4">
-                            <!-- Skill 1 -->
-                            <div class="space-y-1">
-                                <div class="flex justify-between text-xs font-code">
-                                    <span class="text-slate-300">File Management & OS (Windows/Linux)</span>
-                                    <span class="text-cyber-cyan">90%</span>
+                            <!-- Portfolio Goal 1 -->
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 rounded-full bg-brand-500/15 text-cyber-cyan flex items-center justify-center flex-shrink-0 mt-1">
+                                    <i class="fa-solid fa-folder-tree text-xs"></i>
                                 </div>
-                                <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                                    <div class="h-full bg-gradient-to-r from-brand-600 to-cyber-cyan rounded-full" style="width: 90%"></div>
-                                </div>
-                            </div>
-                            <!-- Skill 2 -->
-                            <div class="space-y-1">
-                                <div class="flex justify-between text-xs font-code">
-                                    <span class="text-slate-300">Academic Literature Evaluation (CRAAP/PageRank)</span>
-                                    <span class="text-cyber-cyan">95%</span>
-                                </div>
-                                <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                                    <div class="h-full bg-gradient-to-r from-brand-600 to-cyber-cyan rounded-full" style="width: 95%"></div>
+                                <div>
+                                    <h4 class="text-base font-bold text-white">Quản trị & Hệ thống hóa Tri thức học thuật</h4>
+                                    <p class="text-sm text-slate-300">Lưu trữ, cấu trúc và hiển thị trực quan toàn bộ 7 sản phẩm dự án thành phần của môn học VNU1001 một cách có hệ thống để phục vụ học tập lâu dài.</p>
                                 </div>
                             </div>
-                            <!-- Skill 3 -->
-                            <div class="space-y-1">
-                                <div class="flex justify-between text-xs font-code">
-                                    <span class="text-slate-300">Advanced Prompt Engineering</span>
-                                    <span class="text-cyber-cyan">90%</span>
+                            <!-- Portfolio Goal 2 -->
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 rounded-full bg-brand-500/15 text-cyber-cyan flex items-center justify-center flex-shrink-0 mt-1">
+                                    <i class="fa-solid fa-user-gear text-xs"></i>
                                 </div>
-                                <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                                    <div class="h-full bg-gradient-to-r from-brand-600 to-cyber-cyan rounded-full" style="width: 90%"></div>
-                                </div>
-                            </div>
-                            <!-- Skill 4 -->
-                            <div class="space-y-1">
-                                <div class="flex justify-between text-xs font-code">
-                                    <span class="text-slate-300">Digital Collaboration Tools (Trello, Drive, Meet)</span>
-                                    <span class="text-cyber-cyan">85%</span>
-                                </div>
-                                <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                                    <div class="h-full bg-gradient-to-r from-brand-600 to-cyber-cyan rounded-full" style="width: 85%"></div>
+                                <div>
+                                    <h4 class="text-base font-bold text-white">Minh chứng Năng lực Công nghệ cá nhân</h4>
+                                    <p class="text-sm text-slate-300">Khẳng định khả năng tự học thiết kế giao diện, khả năng tích hợp công cụ AI cùng kỹ năng trình bày, tổng hợp thông tin khoa học chuyên nghiệp.</p>
                                 </div>
                             </div>
-                            <!-- Skill 5 -->
-                            <div class="space-y-1">
-                                <div class="flex justify-between text-xs font-code">
-                                    <span class="text-slate-300">Generative AI Content Creation (Canva/DALL-E)</span>
-                                    <span class="text-cyber-cyan">80%</span>
+                            <!-- Portfolio Goal 3 -->
+                            <div class="flex items-start space-x-3">
+                                <div class="w-6 h-6 rounded-full bg-brand-500/15 text-cyber-cyan flex items-center justify-center flex-shrink-0 mt-1">
+                                    <i class="fa-solid fa-arrow-up-right-dots text-xs"></i>
                                 </div>
-                                <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
-                                    <div class="h-full bg-gradient-to-r from-brand-600 to-cyber-cyan rounded-full" style="width: 80%"></div>
+                                <div>
+                                    <h4 class="text-base font-bold text-white">Đánh giá Sự tiến bộ & Phản tư cuối khóa</h4>
+                                    <p class="text-sm text-slate-300">Làm thước đo trực quan phản ánh quá trình thay đổi tư duy, sự làm chủ kỹ thuật số và cam kết thượng tôn liêm chính học thuật trong việc ứng dụng AI.</p>
                                 </div>
                             </div>
                         </div>
@@ -407,21 +393,21 @@
                 
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-6">
                     <div>
-                        <div class="inline-flex items-center space-x-2 bg-cyber-cyan/10 text-cyber-cyan border border-cyber-cyan/30 px-3 py-1 rounded-full text-xs font-code mb-2">
+                        <div class="inline-flex items-center space-x-2 bg-cyber-cyan/15 text-cyber-cyan border border-cyber-cyan/35 px-4 py-1.5 rounded-full text-xs font-bold font-code mb-2">
                             <i class="fa-solid fa-box-archive"></i>
                             <span>KHO TÀI LIỆU SỐ CHUYÊN NGHIỆP</span>
                         </div>
-                        <h1 class="text-3xl font-black text-slate-100">Bài tập dự án thành phần</h1>
-                        <p class="text-slate-400 text-sm">Tổng hợp toàn bộ 7 sản phẩm học thuật của học phần VNU1001, lưu trữ trực tuyến.</p>
+                        <h1 class="text-4xl font-extrabold text-white">Bài tập dự án thành phần</h1>
+                        <p class="text-slate-300 text-base">Tổng hợp toàn bộ 7 sản phẩm học thuật của học phần VNU1001, lưu trữ trực tuyến.</p>
                     </div>
                     <!-- Stats badge -->
-                    <div class="bg-slate-900 border border-slate-800 p-4 rounded-xl flex items-center space-x-4 self-start md:self-auto">
-                        <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-brand-500 to-cyber-blue flex items-center justify-center text-white">
-                            <i class="fa-solid fa-list-check text-xl"></i>
+                    <div class="bg-slate-900 border border-slate-850 p-4 rounded-xl flex items-center space-x-4 self-start md:self-auto">
+                        <div class="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-500 to-cyber-blue flex items-center justify-center text-white">
+                            <i class="fa-solid fa-list-check text-2xl"></i>
                         </div>
                         <div>
-                            <span class="block text-2xl font-bold font-code text-cyber-cyan">07/07</span>
-                            <span class="text-xs text-slate-400">Nhiệm vụ hoàn thành xuất sắc</span>
+                            <span class="block text-3xl font-extrabold font-code text-cyber-cyan leading-tight">07/07</span>
+                            <span class="text-xs text-slate-300 font-bold">Nhiệm vụ hoàn thành xuất sắc</span>
                         </div>
                     </div>
                 </div>
@@ -437,52 +423,52 @@
             <section id="tab-conclusion" class="tab-content space-y-8 hidden">
                 
                 <div class="border-b border-slate-800 pb-6">
-                    <div class="inline-flex items-center space-x-2 bg-indigo-500/10 text-indigo-400 border border-indigo-500/30 px-3 py-1 rounded-full text-xs font-code mb-2">
+                    <div class="inline-flex items-center space-x-2 bg-indigo-500/15 text-indigo-400 border border-indigo-500/35 px-4 py-1.5 rounded-full text-xs font-bold font-code mb-2">
                         <i class="fa-solid fa-receipt"></i>
-                        <span>BẢO CÁO PHẢN TƯ CUỐI KHÓA</span>
+                        <span>BÁO CÁO PHẢN TƯ CUỐI KHÓA</span>
                     </div>
-                    <h1 class="text-3xl font-black text-slate-100">Tổng kết và Đánh giá bản thân</h1>
-                    <p class="text-slate-400 text-sm">Hành trình trải nghiệm, nâng cao nhận thức, kỹ năng và liêm chính trong kỷ nguyên trí tuệ nhân tạo.</p>
+                    <h1 class="text-4xl font-extrabold text-white">Tổng kết và Đánh giá bản thân</h1>
+                    <p class="text-slate-300 text-base">Hành trình trải nghiệm, nâng cao nhận thức, kỹ năng và liêm chính trong kỷ nguyên trí tuệ nhân tạo.</p>
                 </div>
 
-                <div class="space-y-8 text-slate-300 text-sm leading-relaxed max-w-5xl">
+                <div class="space-y-8 text-slate-100 text-base leading-relaxed max-w-5xl">
                     
                     <!-- Box 1: Experiences -->
-                    <div class="bg-slate-900/60 border border-slate-800 p-6 lg:p-8 rounded-3xl space-y-4 shadow-xl">
-                        <div class="flex items-center space-x-3 text-cyber-cyan">
-                            <div class="w-8 h-8 rounded-lg bg-cyber-cyan/10 flex items-center justify-center text-sm">
+                    <div class="bg-slate-900/70 border border-slate-800 p-6 lg:p-8 rounded-3xl space-y-4 shadow-xl">
+                        <div class="flex items-center space-x-3 text-cyber-cyan border-b border-slate-800 pb-2">
+                            <div class="w-10 h-10 rounded-lg bg-cyber-cyan/15 flex items-center justify-center text-base">
                                 <i class="fa-solid fa-compass"></i>
                             </div>
-                            <h3 class="text-lg font-bold text-slate-100">1. Trải nghiệm cốt lõi của hành trình</h3>
+                            <h3 class="text-xl font-extrabold text-white">1. Trải nghiệm cốt lõi của hành trình</h3>
                         </div>
-                        <p>
+                        <p class="text-slate-200">
                             Quá trình thực hiện dự án Portfolio này giống như một thước phim thu nhỏ phản chiếu sự tiến hóa về mặt tư duy của tôi. Xuất phát từ những bài học ban đầu về cấu trúc thư mục, hệ điều hành (Bài 1) cho đến việc tìm hiểu sâu sắc về kiến trúc nén dữ liệu của thuật toán PageRank phục vụ mục tiêu tối ưu hóa bộ nhớ máy chủ (Bài 2), tôi nhận ra CNTT không chỉ là lý thuyết khô khan mà là sự giao thoa nghệ thuật giữa toán học và kỹ nghệ hệ thống. 
                         </p>
-                        <p>
+                        <p class="text-slate-200">
                             Việc trực tiếp thảo luận nhóm trực tuyến (Bài 4) thông qua Trello, Drive và Google Meet đã trang bị cho tôi kỹ năng phối hợp hiện đại. Đây là những trải nghiệm cực kỳ quý báu để phục vụ trực tiếp cho các đồ án chuyên ngành Hệ thống thông tin của tôi trong những năm tới tại giảng đường UET.
                         </p>
                     </div>
 
                     <!-- Box 2: Key Knowledge & Skills -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl space-y-3">
-                            <div class="flex items-center space-x-2 text-brand-500">
-                                <i class="fa-solid fa-lightbulb"></i>
-                                <h4 class="text-base font-bold text-slate-100">Kiến thức quan trọng đọng lại</h4>
+                        <div class="bg-slate-900/70 border border-slate-800 p-6 rounded-2xl space-y-4">
+                            <div class="flex items-center space-x-2 text-brand-400 border-b border-slate-800 pb-2">
+                                <i class="fa-solid fa-lightbulb text-lg"></i>
+                                <h4 class="text-lg font-extrabold text-white">Kiến thức quan trọng đọng lại</h4>
                             </div>
-                            <ul class="space-y-2 list-disc list-inside text-slate-400 text-xs">
+                            <ul class="space-y-3 list-disc list-inside text-slate-200 text-sm leading-relaxed">
                                 <li><strong>Tiêu chí CRAAP:</strong> Khả năng chọn lọc và loại bỏ tới 70% tài liệu giả học thuật bằng kiểm chứng đa kênh.</li>
                                 <li><strong>Kỹ thuật Prompt nâng cao:</strong> Cách định hình tư duy của AI bằng Few-shot, Chain-of-thought và gán vai trò chi tiết.</li>
                                 <li><strong>Bản chất ma trận thưa (Sparse Row CSR):</strong> Thách thức thực thi hệ thống và tối ưu tài nguyên lưu trữ của máy chủ.</li>
                                 <li><strong>Đạo đức học thuật & AI:</strong> Khắc phục lỗi "hallucination" của AI qua kiểm chứng chéo bằng giáo trình Đại học chính thống.</li>
                             </ul>
                         </div>
-                        <div class="bg-slate-900/60 border border-slate-800 p-6 rounded-2xl space-y-3">
-                            <div class="flex items-center space-x-2 text-amber-500">
-                                <i class="fa-solid fa-rocket"></i>
-                                <h4 class="text-base font-bold text-slate-100">Kỹ năng số nổi bật gặt hái được</h4>
+                        <div class="bg-slate-900/70 border border-slate-800 p-6 rounded-2xl space-y-4">
+                            <div class="flex items-center space-x-2 text-amber-500 border-b border-slate-800 pb-2">
+                                <i class="fa-solid fa-rocket text-lg"></i>
+                                <h4 class="text-lg font-extrabold text-white">Kỹ năng số nổi bật gặt hái được</h4>
                             </div>
-                            <ul class="space-y-2 list-disc list-inside text-slate-400 text-xs">
+                            <ul class="space-y-3 list-disc list-inside text-slate-200 text-sm leading-relaxed">
                                 <li><strong>Sử dụng Elicit & Consensus:</strong> Tìm kiếm đồng thuận khoa học từ hàng triệu bài báo có đối chiếu chéo chỉ số.</li>
                                 <li><strong>Tạo dựng Infographic tối giản:</strong> Phối hợp màu sắc tương phản Cyberpunk và Canva Magic Design để thu hút độc giả.</li>
                                 <li><strong>Quản trị quy trình nhóm qua Trello:</strong> Thiết lập quy chuẩn phân quyền, chia bảng, theo dõi dòng chảy công việc (Workflows).</li>
@@ -492,17 +478,17 @@
                     </div>
 
                     <!-- Box 3: Self Assessment & Future outlook -->
-                    <div class="bg-slate-900/60 border border-slate-800 p-6 lg:p-8 rounded-3xl space-y-4 shadow-xl">
-                        <div class="flex items-center space-x-3 text-emerald-400">
-                            <div class="w-8 h-8 rounded-lg bg-emerald-400/10 flex items-center justify-center text-sm">
+                    <div class="bg-slate-900/70 border border-slate-800 p-6 lg:p-8 rounded-3xl space-y-4 shadow-xl">
+                        <div class="flex items-center space-x-3 text-emerald-400 border-b border-slate-800 pb-2">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-400/15 flex items-center justify-center text-base">
                                 <i class="fa-solid fa-seedling"></i>
                             </div>
-                            <h3 class="text-lg font-bold text-slate-100">2. Đánh giá sự trưởng thành và Triển vọng tương lai</h3>
+                            <h3 class="text-xl font-extrabold text-white">2. Đánh giá sự trưởng thành và Triển vọng tương lai</h3>
                         </div>
-                        <p>
+                        <p class="text-slate-200">
                             Khi nhìn lại toàn bộ các sản phẩm từ đầu năm học, tôi vô cùng tự hào về sự thay đổi của bản thân. Tôi đã chuyển hóa từ một sinh viên CNTT tiếp cận công nghệ một cách thụ động sang một người làm chủ công cụ có trách nhiệm. Khi viết code, xây dựng Prompt, hay viết báo cáo khoa học, tôi luôn tâm niệm: <em class="text-cyber-cyan">"AI chỉ đóng vai trò là một trợ lý đắc lực khởi đầu, sự thẩm định, phản biện và tư duy logic độc lập của con người mới là yếu tố quyết định giá trị tác phẩm học thuật."</em>
                         </p>
-                        <p>
+                        <p class="text-slate-200">
                             Trong tương lai, tôi mong muốn mở rộng hơn nữa khả năng phân tích dữ liệu lớn, liên tục nâng cao bộ quy tắc đạo đức cá nhân về an toàn thông tin để thích nghi hoàn hảo với tốc độ thay đổi nhanh chóng của công nghiệp AI và phát triển bền vững sự nghiệp của một kỹ sư Hệ thống thông tin uy tín.
                         </p>
                     </div>
@@ -515,29 +501,29 @@
     </div>
 
     <!-- MODAL POPUP FOR DETAILED VIEW OF PROJECT ASSIGNMENTS -->
-    <div id="project-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden">
-        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-6xl max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col">
+    <div id="project-modal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md hidden">
+        <div class="bg-slate-900 border border-slate-800 rounded-3xl w-full max-w-6xl max-h-[92vh] overflow-y-auto shadow-2xl flex flex-col">
             <!-- Modal Header -->
-            <div class="p-6 border-b border-slate-800/80 flex items-center justify-between bg-slate-950/50">
+            <div class="p-6 border-b border-slate-800 flex items-center justify-between bg-slate-950/60">
                 <div class="flex items-center space-x-3">
-                    <span id="modal-num" class="font-code text-cyber-cyan text-sm px-2.5 py-1 rounded-md bg-brand-500/15 border border-brand-500/30 font-bold">BAI_X</span>
-                    <h3 id="modal-title" class="text-xl font-black text-slate-100">Tên bài tập chi tiết</h3>
+                    <span id="modal-num" class="font-code text-cyber-cyan text-sm px-3 py-1.5 rounded-lg bg-brand-500/20 border border-brand-500/40 font-bold">BAI_X</span>
+                    <h3 id="modal-title" class="text-2xl font-black text-white">Tên bài tập chi tiết</h3>
                 </div>
-                <button onclick="closeModal()" class="w-9 h-9 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-400 hover:text-white flex items-center justify-center transition-all">
-                    <i class="fa-solid fa-xmark text-lg"></i>
+                <button onclick="closeModal()" class="w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-all">
+                    <i class="fa-solid fa-xmark text-xl"></i>
                 </button>
             </div>
-            <!-- Modal Body Content (Will dynamically render split-screen or embedded PDF layout) -->
-            <div class="p-6 lg:p-8 space-y-6 flex-1 text-slate-300" id="modal-content-body">
+            <!-- Modal Body Content -->
+            <div class="p-6 lg:p-8 space-y-6 flex-1 text-slate-200" id="modal-content-body">
                 <!-- Injected dynamically by JavaScript -->
             </div>
             <!-- Modal Footer -->
-            <div class="p-6 border-t border-slate-800/80 bg-slate-950/50 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <span class="text-xs text-slate-500 font-code flex items-center space-x-1">
+            <div class="p-6 border-t border-slate-800 bg-slate-950/65 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <span class="text-sm text-slate-400 font-code flex items-center space-x-1.5">
                     <i class="fa-solid fa-shield-halved text-brand-500"></i>
                     <span>Sản phẩm lưu trữ đám mây an toàn</span>
                 </span>
-                <a id="modal-link" href="#" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-brand-500 to-cyber-blue hover:from-brand-600 hover:to-cyber-blue/80 text-white font-bold px-6 py-3 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 cyber-glow">
+                <a id="modal-link" href="#" target="_blank" class="w-full sm:w-auto inline-flex items-center justify-center space-x-2 bg-gradient-to-r from-brand-500 to-cyber-blue hover:from-brand-600 hover:to-cyber-blue/80 text-white font-bold px-6 py-3.5 rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5 cyber-glow">
                     <i class="fa-brands fa-google-drive"></i>
                     <span>Xem file PDF gốc trên Google Drive</span>
                 </a>
@@ -545,7 +531,7 @@
         </div>
     </div>
 
-    <!-- AUDIO FOR DYNAMIC CLICKS (Optional futuristic click effect) -->
+    <!-- AUDIO FOR DYNAMIC CLICKS -->
     <audio id="click-sound" src="https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav" preload="auto"></audio>
 
     <!-- MATRIX GRID BACKGROUND JAVASCRIPT ANIMATION -->
@@ -566,11 +552,11 @@
         let offset = 0;
         function drawGrid() {
             ctx.clearRect(0, 0, width, height);
-            ctx.strokeStyle = 'rgba(14, 165, 233, 0.04)';
+            ctx.strokeStyle = 'rgba(14, 165, 233, 0.03)';
             ctx.lineWidth = 1;
 
             // Draw grid lines
-            const gridSize = 60;
+            const gridSize = 65;
             for (let x = (offset % gridSize); x < width; x += gridSize) {
                 ctx.beginPath();
                 ctx.moveTo(x, 0);
@@ -585,10 +571,10 @@
             }
 
             // Draw animated code droplets/particles
-            ctx.fillStyle = 'rgba(0, 240, 255, 0.08)';
+            ctx.fillStyle = 'rgba(0, 240, 255, 0.06)';
             for (let i = 0; i < 20; i++) {
-                const px = Math.sin(offset * 0.002 + i) * width * 0.5 + width * 0.5;
-                const py = (offset * (0.5 + (i % 3) * 0.2) + i * 100) % height;
+                const px = Math.sin(offset * 0.0015 + i) * width * 0.5 + width * 0.5;
+                const py = (offset * (0.4 + (i % 3) * 0.15) + i * 110) % height;
                 ctx.beginPath();
                 ctx.arc(px, py, 1.5 + (i % 3), 0, Math.PI * 2);
                 ctx.fill();
@@ -806,7 +792,7 @@
             }
         ];
 
-        // 2. UNIFIED AND FIXED OPENMODAL FUNCTION (EMBEDS GOOGLE DRIVE IFRAME SIDE-BY-SIDE ON DESKTOP)
+        // 2. UNIFIED AND FIXED OPENMODAL FUNCTION
         function openModal(projectId) {
             playClick();
             const project = projectsData.find(p => p.id === projectId);
@@ -816,19 +802,19 @@
             modalTitle.innerText = project.topic;
             modalLink.href = project.link;
 
-            // Generate split screen detailed HTML inside the modal popup
+            // Generate split screen detailed HTML inside the modal popup (Updated for text size adaptation)
             modalBody.innerHTML = `
                 <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                    <!-- Column 1: Academic details & description (5 grid columns) -->
+                    <!-- Column 1: Academic details & description -->
                     <div class="lg:col-span-5 space-y-6 flex flex-col justify-between pr-2 max-h-[70vh] overflow-y-auto">
                         <div class="space-y-6">
                             <!-- Objective section -->
-                            <div class="bg-slate-950/50 border border-slate-800 p-5 rounded-2xl space-y-2">
+                            <div class="bg-slate-950/60 border border-slate-850 p-5 rounded-2xl space-y-2">
                                 <h4 class="text-sm font-bold text-cyber-cyan uppercase tracking-wider font-code flex items-center space-x-2">
                                     <i class="fa-solid fa-flag"></i>
                                     <span>Mục tiêu của bài tập</span>
                                 </h4>
-                                <p class="text-sm leading-relaxed text-slate-200">${project.details.objective}</p>
+                                <p class="text-base leading-relaxed text-slate-100">${project.details.objective}</p>
                             </div>
 
                             <!-- Steps section -->
@@ -837,29 +823,29 @@
                                     <i class="fa-solid fa-list-check"></i>
                                     <span>Các bước triển khai chi tiết</span>
                                 </h4>
-                                <div class="text-xs leading-relaxed text-slate-300 space-y-2 bg-slate-950/20 p-4 rounded-2xl border border-slate-800/40 font-mono">
+                                <div class="text-sm leading-relaxed text-slate-100 space-y-3 bg-slate-950/30 p-4 rounded-2xl border border-slate-800 font-sans">
                                     ${project.details.steps}
                                 </div>
                             </div>
                         </div>
 
                         <!-- Highlights & Gained skills -->
-                        <div class="bg-emerald-500/10 border border-emerald-500/20 p-4 rounded-2xl flex items-start space-x-3 mt-4">
-                            <div class="w-6 h-6 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <div class="bg-emerald-500/15 border border-emerald-500/30 p-4 rounded-2xl flex items-start space-x-3 mt-4">
+                            <div class="w-7 h-7 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center flex-shrink-0 mt-0.5 animate-pulse">
                                 <i class="fa-solid fa-star text-xs"></i>
                             </div>
                             <div>
-                                <h5 class="text-sm font-bold text-emerald-400">Điểm sáng tri thức gặt hái</h5>
-                                <p class="text-xs text-slate-400 mt-1">${project.details.highlights}</p>
+                                <h5 class="text-base font-bold text-emerald-400">Điểm sáng tri thức gặt hái</h5>
+                                <p class="text-sm text-slate-200 mt-1">${project.details.highlights}</p>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Column 2: Embedded Document preview with Loading Indicator (7 grid columns) -->
-                    <div class="lg:col-span-7 min-h-[450px] lg:min-h-[600px] h-full rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 relative shadow-inner flex flex-col">
+                    <!-- Column 2: Embedded Document preview with Loading Indicator -->
+                    <div class="lg:col-span-7 min-h-[480px] lg:min-h-[620px] h-full rounded-2xl overflow-hidden border border-slate-800 bg-slate-950 relative shadow-inner flex flex-col">
                         <!-- Loading spinner behind iframe -->
-                        <div class="absolute inset-0 flex flex-col items-center justify-center text-xs text-slate-500 font-code pointer-events-none z-0">
-                            <i class="fa-solid fa-circle-notch animate-spin text-3xl text-cyber-cyan mb-3"></i>
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-sm text-slate-400 font-code pointer-events-none z-0">
+                            <i class="fa-solid fa-circle-notch animate-spin text-4xl text-cyber-cyan mb-3"></i>
                             <span>Đang kết nối tài liệu lưu trữ từ Google Drive...</span>
                         </div>
                         <!-- Embedded PDF View Document Frame -->
@@ -881,29 +867,29 @@
         const container = document.getElementById('projects-container');
         projectsData.forEach(p => {
             const card = document.createElement('div');
-            card.className = "relative bg-cyber-card border border-slate-800/80 rounded-2xl p-6 space-y-4 shadow-lg hover:border-brand-500/50 hover:shadow-brand-500/5 transition-all duration-300 flex flex-col justify-between group";
+            card.className = "relative bg-cyber-card border border-slate-800 rounded-2xl p-6 space-y-4 shadow-lg hover:border-brand-500/50 hover:shadow-brand-500/5 transition-all duration-300 flex flex-col justify-between group";
             card.innerHTML = `
-                <div class="space-y-3">
+                <div class="space-y-4">
                     <!-- Card Top Header -->
                     <div class="flex items-center justify-between">
-                        <span class="font-code text-xs font-bold text-cyber-cyan px-2.5 py-1 rounded-md bg-brand-500/10 border border-brand-500/20">${p.num}</span>
-                        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr ${p.color} text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+                        <span class="font-code text-xs font-bold text-cyber-cyan px-2.5 py-1 rounded-md bg-brand-500/25 border border-brand-500/40">${p.num}</span>
+                        <div class="w-11 h-11 rounded-xl bg-gradient-to-tr ${p.color} text-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                             <i class="${p.icon} text-lg"></i>
                         </div>
                     </div>
                     <!-- Card Title -->
-                    <h3 class="text-lg font-bold text-slate-100 group-hover:text-cyber-cyan transition-colors leading-tight">${p.topic}</h3>
+                    <h3 class="text-xl font-bold text-white group-hover:text-cyber-cyan transition-colors leading-snug">${p.topic}</h3>
                     <!-- Card Brief Description -->
-                    <p class="text-slate-400 text-xs leading-relaxed line-clamp-3">${p.brief}</p>
+                    <p class="text-slate-200 text-sm leading-relaxed line-clamp-3">${p.brief}</p>
                 </div>
 
                 <!-- Card Action Buttons with Enhanced Dynamic Click Design -->
-                <div class="pt-4 border-t border-slate-800/60 mt-4 flex items-center justify-between gap-3">
-                    <button onclick="openModal(${p.id})" class="bg-brand-500/15 border border-brand-500/30 hover:bg-gradient-to-r hover:from-brand-500 hover:to-cyber-blue text-cyber-cyan hover:text-white font-bold text-xs px-3.5 py-2.5 rounded-xl transition-all duration-300 flex items-center space-x-2 shadow-lg shadow-brand-500/5 cursor-pointer">
-                        <i class="fa-solid fa-file-invoice text-[11px]"></i>
+                <div class="pt-4 border-t border-slate-800/80 mt-4 flex items-center justify-between gap-3">
+                    <button onclick="openModal(${p.id})" class="bg-brand-500/20 border border-brand-500/40 hover:bg-gradient-to-r hover:from-brand-500 hover:to-cyber-blue text-cyber-cyan hover:text-white font-bold text-xs px-4 py-3 rounded-xl transition-all duration-300 flex items-center space-x-2 shadow-lg cursor-pointer">
+                        <i class="fa-solid fa-file-invoice text-xs"></i>
                         <span>Chi tiết học thuật</span>
                     </button>
-                    <a href="${p.link}" target="_blank" class="bg-slate-800 hover:bg-cyber-cyan hover:text-cyber-dark text-slate-300 text-xs font-bold px-3 py-2.5 rounded-xl transition-all duration-300 flex items-center space-x-1.5 border border-slate-700 hover:border-cyber-cyan">
+                    <a href="${p.link}" target="_blank" class="bg-slate-800 hover:bg-cyber-cyan hover:text-cyber-dark text-slate-100 text-xs font-bold px-4 py-3 rounded-xl transition-all duration-300 flex items-center space-x-1.5 border border-slate-700 hover:border-cyber-cyan">
                         <i class="fa-brands fa-google-drive"></i>
                         <span>Drive PDF</span>
                     </a>
